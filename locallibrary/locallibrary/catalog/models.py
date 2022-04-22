@@ -43,6 +43,7 @@ class Book(models.Model):
     genre = models.ManyToManyField(Genre, help_text="Seleccione un genero para este libro")
     # ManyToManyField, porque un género puede contener muchos libros y un libro puede cubrir varios géneros.
     # La clase Genre ya ha sido definida, entonces podemos especificar el objeto arriba.
+    language = models.ManyToManyField(Language, help_text="Seleccione un lenguaje para este libro")
 
     def __str__(self):
         """
@@ -114,3 +115,6 @@ class Author(models.Model):
         String para representar el Objeto Modelo
         """
         return '%s, %s' % (self.last_name, self.first_name)
+
+    class Meta:
+        ordering = ['last_name']
