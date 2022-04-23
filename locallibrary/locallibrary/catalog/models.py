@@ -5,6 +5,15 @@ from django.contrib.auth.models import User  # Required to assign User as a borr
 from datetime import date
 
 # Create your models here.
+
+class Language(models.Model):
+    """Model representing a Language (e.g. English, French, Japanese, etc.)"""
+    name = models.CharField(max_length=200,
+                            help_text="Enter the book's natural language (e.g. English, French, Japanese etc.)")
+
+    def __str__(self):
+        """String for representing the Model object (in Admin site etc.)"""
+        return self.name
 class Genre(models.Model):
     """
     Modelo que representa un género literario (p. ej. ciencia ficción, poesía, etc.).
@@ -17,14 +26,7 @@ class Genre(models.Model):
         """
         return self.name
 
-class Language(models.Model):
-    """Model representing a Language (e.g. English, French, Japanese, etc.)"""
-    name = models.CharField(max_length=200,
-                            help_text="Enter the book's natural language (e.g. English, French, Japanese etc.)")
 
-    def __str__(self):
-        """String for representing the Model object (in Admin site etc.)"""
-        return self.name
 
 class Book(models.Model):
     """
@@ -41,10 +43,11 @@ class Book(models.Model):
 
     isbn = models.CharField('ISBN',max_length=13, help_text='13 Caracteres <a href="https://www.isbn-international.org/content/what-isbn">ISBN number</a>')
 
+    language = models.ForeignKey('Language', on_delete=models.SET_NULL, null=True)
+
     genre = models.ManyToManyField(Genre, help_text="Seleccione un genero para este libro")
     # ManyToManyField, porque un género puede contener muchos libros y un libro puede cubrir varios géneros.
     # La clase Genre ya ha sido definida, entonces podemos especificar el objeto arriba.
-    language = models.ManyToManyField(Language, help_text="Seleccione un lenguaje para este libro")
 
     def __str__(self):
         """
